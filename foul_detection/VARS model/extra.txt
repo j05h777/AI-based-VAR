@@ -1,0 +1,14 @@
+'''
+for train.py eval fn
+
+    with torch.no_grad():
+        for batch in dataloader:
+            if batch is None:
+                continue
+            batch_count += 1
+            if batch_count % 20 == 0:
+                print(f"📦 {set_name} B{batch_count}/{len(dataloader)}")
+            
+            #_, _, mvclips, action = batch
+            targets_offence_severity, targets_action, mvclips, action = batch
+    '''
