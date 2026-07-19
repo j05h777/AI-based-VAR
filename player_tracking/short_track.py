@@ -5,14 +5,16 @@ from collections import defaultdict, deque
 from pathlib import Path
 import warnings
 import time
+import torch
+import functools
 warnings.filterwarnings('ignore')
-
+torch.load = functools.partial(torch.load, weights_only=False)
 
 # Configuration
 BASE_DIR = Path(__file__).resolve().parent
-
 MODEL_PATH = BASE_DIR / "runs" / "detect" / "train" / "weights" / "best.pt"
-VIDEO_PATH = BASE_DIR / "clips" / "action_8" / "clip_0.mp4"
+print(MODEL_PATH)
+# VIDEO_PATH = "C:/Users/neeld/VAR/Player Tracking/clips/action_8/clip_0.mp4"
 
 # Class definitions
 PLAYER_CLASS = 0
@@ -271,11 +273,6 @@ def main():
     # Initialize
     model = YOLO(MODEL_PATH)
     model.to('cuda')
-    print("Warming up model...")
-    dummy = np.zeros((1080, 1920, 3), dtype=np.uint8)
-    for _ in range(3):
-        model.track(dummy, persist=True, verbose=False, device='cuda')
-    print("Warm-up complete.")
     cap = cv2.VideoCapture(VIDEO_PATH)
     
     if not cap.isOpened():
